@@ -29,11 +29,11 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.1.2</version>
-                <configuration>
+                <!--<configuration>
                     <url>jdbc:oracle:thin:@localhost:1521/pdb1</url>
                     <user>quizflyway</user>
                     <password>quizflyway</password>
-                </configuration>
+                </configuration> -->
                 <dependencies>
                     <dependency>
 			            <groupId>com.oracle</groupId>
