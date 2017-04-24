@@ -120,3 +120,36 @@ Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','18');
 Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','19');
 Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','20');
 Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','21');
+
+CREATE EDITION V1POINT2;
+ALTER SESSION SET EDITION = V1POINT2;
+
+CREATE OR REPLACE Function FindQuizName
+   ( id_in IN number )
+   RETURN varchar2
+IS
+   cname varchar2(100);
+
+   cursor c1 is
+   SELECT name
+     FROM quiz
+     WHERE id = id_in;
+
+BEGIN
+
+   open c1;
+   fetch c1 into cname;
+
+   if c1%notfound then
+      cname := 'THIS QUIZ DOES NOT EXIST';
+   end if;
+
+   close c1;
+
+RETURN cname;
+
+EXCEPTION
+WHEN OTHERS THEN
+   raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
+END;
+/
