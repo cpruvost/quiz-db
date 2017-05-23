@@ -1,3 +1,5 @@
+ALTER SESSION SET EDITION = V1POINT2;
+
 /* INSERTING into QUESTION */
 
 Insert into QUESTION (ID,TYPE,TEXT,OPEN_ANSWER,CLOSED_ANSWER) values ('1','Fermée','Quelle est le nom de la machine Oracle permettant de consommer des services Cloud On Premise ?',null,'Oracle Cloud Machine');
@@ -120,9 +122,6 @@ Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','18');
 Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','19');
 Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','20');
 Insert into QUIZQUESTION (QUIZ_ID,QUESTION_ID) values ('5','21');
-
-CREATE EDITION V1POINT2;
-ALTER SESSION SET EDITION = V1POINT2;
 
 CREATE OR REPLACE Function FindQuizName
    ( id_in IN number )
