@@ -28,6 +28,14 @@
 	</dependency>
   </dependencies>
   
+  <repositories>
+    <repository>
+      <id>my-devcs</id>
+      <name>My devcs repo</name>
+      <url>https://developer.us2.oraclecloud.com/profile/developer40804-gse00011444/s/developer40804-gse00011444_quizdb_16883/maven/</url>
+    </repository>
+  </repositories>  
+  
   <build>
         <plugins>
             <plugin>
