@@ -10,7 +10,7 @@ data "oci_database_autonomous_databases" "autonomous_databases" {
 
 output "autonomous_database_high_connection_string" {
   #value = "${lookup(oci_database_autonomous_database.tf_adb.connection_strings.0.all_connection_strings, "high", "unavailable")}"
-  value = "${data.oci_database_autonomous_databases.autonomous_databases.autonomous_databases.connection_strings.high}"
+  value = "${data.oci_database_autonomous_databases.autonomous_databases.autonomous_databases.connection_strings.0.high}"
 }
 
 output "autonomous_databases" {
