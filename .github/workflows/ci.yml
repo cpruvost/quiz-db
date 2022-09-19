@@ -70,7 +70,7 @@ jobs:
         run: terraform apply -input=false -auto-approve myplan
         working-directory: "./src/main/resources/db/tf/modules/atp"
         
-      - name: Retrieve the connexion url of ATP
+      - name: OCI CLI retrieve url of ATP
         if: contains(github.event.issue.title, 'create-atp') 
         uses: oracle-actions/run-oci-cli-command@v1.0
         id: find-atp-url
