@@ -57,15 +57,13 @@ jobs:
         working-directory: "./src/main/resources/db/tf/modules/atp"
 
       - name: Terraform Apply
-        #if: "contains(github.event.head_commit.message, 'apply')"
-        if: contains(github.event.issue.labels.*.name, 'create-atp') 
+        if: "contains(github.event.head_commit.message, 'apply')"
         id: apply
         run: terraform apply -input=false -auto-approve myplan
         working-directory: "./src/main/resources/db/tf/modules/atp"
 
       - name: Terraform Destroy
-        #if: "contains(github.event.head_commit.message, 'destroy')"
-        if: contains(github.event.issue.labels.*.name, 'destroy-atp') 
+        if: "contains(github.event.head_commit.message, 'destroy')"
         id: destroy
         run: terraform destroy -auto-approve  
         working-directory: "./src/main/resources/db/tf/modules/atp"
