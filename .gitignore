@@ -1,1 +1,4 @@
 /target/
+
+#Local Dev ATP Config with Credentials
+dev_atp_config.properties

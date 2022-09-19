@@ -93,11 +93,11 @@ Insert into ANSWER (ID,QUESTION_ID,TEXT) values ('64','20','avec toutes les tech
 
 /* INSERTING into QUIZ */
 
-Insert into QUIZ (ID,NAME) values ('1','Quiz DevOps');
-Insert into QUIZ (ID,NAME) values ('2','Quiz Tech');
-Insert into QUIZ (ID,NAME) values ('3','Modern App');
-Insert into QUIZ (ID,NAME) values ('4','General Session');
-Insert into QUIZ (ID,NAME) values ('5','IOT');
+Insert into QUIZ (ID,NAME,DETAILS) values ('1','Quiz DevOps','Infra As Code - Culture - ... ');
+Insert into QUIZ (ID,NAME,DETAILS) values ('2','Quiz Tech', 'Database - Middleware - Langages de Développement - ...');
+Insert into QUIZ (ID,NAME,DETAILS) values ('3','Modern App', 'Docker - Kubernetes - Microservices - ...');
+Insert into QUIZ (ID,NAME,DETAILS) values ('4','General Session', 'Oracle - IT - ...');
+Insert into QUIZ (ID,NAME,DETAILS) values ('5','IOT', 'Android - Strealing - ...');
 
 /* INSERTING into QUIZQUESTION */
 
@@ -152,3 +152,4 @@ WHEN OTHERS THEN
    raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
 END;
 /
+
