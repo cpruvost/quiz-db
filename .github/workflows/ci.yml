@@ -76,7 +76,7 @@ jobs:
         id: find-atp-url
         with:
           command: 'db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
-          query: 'data[*]."connection-strings"."profiles"[0].value'
+          #query: 'data[*]."connection-strings"."profiles"[0].value'
           
       - name: show ATP url
         if: contains(github.event.issue.title, 'create-atp') 
