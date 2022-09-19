@@ -75,7 +75,7 @@ jobs:
         uses: oracle-actions/run-oci-cli-command@v1.0
         id: find-atp-url
         with:
-          command: 'oci db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
+          command: 'db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
           query: 'data[*]."connection-strings"."profiles"[0].value'
           
       - name: show ATP url
