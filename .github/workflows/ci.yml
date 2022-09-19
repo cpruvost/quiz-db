@@ -1,0 +1,68 @@
+name: ci
+
+on: 
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: hashicorp/setup-terraform@v2
+          
+      - run: |
+         terraform -v 
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -reconfigure -backend-config="address=${{ secrets.TF_BACKEND_CONFIG }}"
+        working-directory: "./src/main/resources/db/tf/modules/atp"
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - uses: schdck/create-env-json@v1
+        id: create-env
+        with:
+          file-name: './src/main/resources/db/tf/modules/atp/env.json'
+          TENANCY_OCID: ${{ secrets.TF_VAR_TENANCY_OCID }}
+          USER_OCID: ${{ secrets.TF_VAR_USER_OCID }}
+          FINGERPRINT: ${{ secrets.TF_VAR_FINGERPRINT }}
+          PRIVATE_KEY: ${{ secrets.TF_VAR_PRIVATE_KEY }}
+          REGION: ${{ secrets.TF_VAR_REGION }}
+          COMPARTMENT_OCID: ${{ secrets.TF_VAR_COMPARTMENT_OCID }}
+          DB_NAME: ${{ secrets.TF_VAR_DB_NAME }}
+          ADMIN_PASSWORD: ${{ secrets.TF_VAR_ADMIN_PASSWORD }}
+          DB_VERSION: ${{ secrets.TF_VAR_DB_VERSION }}
+          DB_WORKLOAD: ${{ secrets.TF_VAR_DB_WORKLOAD }}
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var-file=env.json -out myplan -no-color
+        working-directory: "./src/main/resources/db/tf/modules/atp"
+
+      - name: Terraform Apply
+        if: "contains(github.event.head_commit.message, 'apply')"
+        id: apply
+        run: terraform apply -input=false -auto-approve myplan
+
+      - name: Terraform Destroy
+        if: "contains(github.event.head_commit.message, 'destroy')"
+        id: destroy
+        run: terraform destroy -auto-approve  
+
+         
+        
