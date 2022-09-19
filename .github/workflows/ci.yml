@@ -70,15 +70,31 @@ jobs:
         run: terraform apply -input=false -auto-approve myplan
         working-directory: "./src/main/resources/db/tf/modules/atp"
         
-      - name: OCI CLI retrieve url of ATP
-        if: contains(github.event.issue.title, 'create-atp') 
-        uses: oracle-actions/run-oci-cli-command@v1.0
-        id: find-atp-url
-        with:
-          command: 'oci iam region list'
+      #- name: OCI CLI retrieve url of ATP
+       # if: contains(github.event.issue.title, 'create-atp') 
+        #uses: oracle-actions/run-oci-cli-command@v1.0
+        #id: find-atp-url
+        #with:
+          #command: 'oci iam region list'
           #command: 'db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
           #query: 'data[*].\"connection-string\s\".\"profiles\"[0].value'
-          query: 'data[0].name'
+          #query: 'data[0].name'
+      
+      - name: Install OCI CLI
+        uses: cpruvost/oci-cli-action@v1.0.4
+        with:
+          user: "${{ secrets.TF_VAR_USER_OCID }}"
+          fingerprint: "${{ secrets.TF_VAR_FINGERPRINT }}"
+          tenancy: "${{ secrets.TF_VAR_TENANCY_OCID }}"
+          region: ${{ secrets.TF_VAR_REGION }}
+          api_key: |
+            ${{ secrets.TF_VAR_PRIVATE_KEY }}
+          cli_version: master   
+          
+      - name: OCI commands
+        if: contains(github.event.issue.title, 'create-atp')
+        id: find-atp-url 
+        run: oci iam region list
           
       - name: show ATP url
         if: contains(github.event.issue.title, 'create-atp') 
