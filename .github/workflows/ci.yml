@@ -70,10 +70,10 @@ jobs:
         run: terraform apply -input=false -auto-approve myplan
         working-directory: "./src/main/resources/db/tf/modules/atp"
         
-      - name: OCI CLI retrieve url of ATP
+      - name: Install OCI CLI
         if: contains(github.event.issue.title, 'create-atp') 
         uses: oracle-actions/run-oci-cli-command@v1.0
-        id: find-atp-url2
+        id: oci-cli
         with:
           command: 'iam region list'
           #command: 'db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
@@ -94,12 +94,12 @@ jobs:
       - name: OCI commands
         if: contains(github.event.issue.title, 'create-atp')
         id: find-atp-url 
-        run: oci db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE | jq .data[0].\"connection-strings\".\"profiles\"[0].value
+        run: echo "::set-output name=ATP_URL::$(oci db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE | jq -r .data[0].\"connection-strings\".\"profiles\"[0].value)"
           
       - name: show ATP url
         if: contains(github.event.issue.title, 'create-atp') 
         run: |
-         echo "${{ steps.find-atp-url.outputs.output }}"   
+         echo "${{ steps.find-atp-url.outputs.DB_URL }}"   
 
       - name: Terraform Destroy
         #if: "contains(github.event.head_commit.message, 'destroy')"
