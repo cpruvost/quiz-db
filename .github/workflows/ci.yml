@@ -75,9 +75,10 @@ jobs:
         uses: oracle-actions/run-oci-cli-command@v1.0
         id: find-atp-url
         with:
-          #command: 'oci iam region list'
-          command: 'db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
-          query: 'data[*].\"connection-string\s\".\"profiles\"[0].value'
+          command: 'oci iam region list'
+          #command: 'db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
+          #query: 'data[*].\"connection-string\s\".\"profiles\"[0].value'
+          query: 'data[0].name'
           
       - name: show ATP url
         if: contains(github.event.issue.title, 'create-atp') 
