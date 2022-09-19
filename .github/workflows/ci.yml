@@ -99,7 +99,7 @@ jobs:
       - name: show ATP url
         if: contains(github.event.issue.title, 'create-atp') 
         run: |
-         echo "${{ steps.find-atp-url.outputs.DB_URL }}"   
+         echo "${{ steps.find-atp-url.outputs.ATP_URL }}"   
 
       - name: Terraform Destroy
         #if: "contains(github.event.head_commit.message, 'destroy')"
