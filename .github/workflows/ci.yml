@@ -58,7 +58,7 @@ jobs:
 
       - name: Terraform Apply
         #if: "contains(github.event.head_commit.message, 'apply')"
-        if: contains(github.event.issue.labels.*.name, 'create-atp) 
+        if: contains(github.event.issue.labels.*.name, 'create-atp') 
         id: apply
         run: terraform apply -input=false -auto-approve myplan
         working-directory: "./src/main/resources/db/tf/modules/atp"
