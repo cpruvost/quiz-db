@@ -94,7 +94,7 @@ jobs:
       - name: OCI commands
         if: contains(github.event.issue.title, 'create-atp')
         id: find-atp-url 
-        run: db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE
+        run: oci db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE
           
       - name: show ATP url
         if: contains(github.event.issue.title, 'create-atp') 
