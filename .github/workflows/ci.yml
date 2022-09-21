@@ -24,7 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - uses: hashicorp/setup-terraform@v2
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v2
           
       - run: |
          terraform -v 
@@ -43,7 +44,8 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      - uses: schdck/create-env-json@v1
+      - name: Terraform Variables File Preparation
+        uses: schdck/create-env-json@v1
         id: create-env
         with:
           file-name: './src/main/resources/db/tf/modules/atp/env.json'
@@ -70,7 +72,7 @@ jobs:
         run: terraform apply -input=false -auto-approve myplan
         working-directory: "./src/main/resources/db/tf/modules/atp"
         
-      - name: Install OCI CLI
+      - name: OCI CLI Setup
         if: contains(github.event.issue.title, 'create-atp') 
         uses: oracle-actions/run-oci-cli-command@v1.0
         id: oci-cli
@@ -78,28 +80,25 @@ jobs:
           command: 'iam region list'
           #query: 'data[0]'
           
-      - name: Get ATP url with OCI CLI
+      - name: OCI CLI Get ATP url
         if: contains(github.event.issue.title, 'create-atp')
         id: find-atp-url 
-        run: echo "::set-output name=ATP_URL::$(oci db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE | jq -r .data[0].\"connection-strings\".\"profiles\"[0].value)"
-          
-      - name: show ATP url
-        if: contains(github.event.issue.title, 'create-atp') 
         run: |
-         echo "${{ steps.find-atp-url.outputs.ATP_URL }}"  
+          echo "::set-output name=ATP_URL::$(oci db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE | jq -r .data[0].\"connection-strings\".\"profiles\"[0].value)"
+          echo "${{ steps.find-atp-url.outputs.ATP_URL }}"
          
-      - name: 'Set up latest Oracle JDK 17'
+      - name: Oracle JDK 17 Setup (for Oracle Sqlcl) 
         if: contains(github.event.issue.title, 'create-atp') 
         uses: oracle-actions/setup-java@v1
         with:
          website: oracle.com
          release: 17    
          
-      - name: Install Oracle Sqlcl
+      - name: Oracle Sqlcl Setup
         if: contains(github.event.issue.title, 'create-atp') 
         uses: cpruvost/setup-sqlcl@v1.0.0   
         
-      - name: Create Oracle User
+      - name: Oracle Sqlcl Create Oracle User
         if: contains(github.event.issue.title, 'create-atp') 
         run: |
           ./sqlcl/bin/sql -V
@@ -107,14 +106,6 @@ jobs:
           cat ./src/main/resources/db/sql/create-schema.sql
           exit | ./sqlcl/bin/sql admin/${{ secrets.TF_VAR_ADMIN_PASSWORD }}@'${{ steps.find-atp-url.outputs.ATP_URL }}' @./src/main/resources/db/sql/create-schema.sql
         continue-on-error: true  
-        
-      - name: Create Oracle User Resources with Flyway
-        uses: joshuaavalon/flyway-action@v2
-        if: contains(github.event.issue.title, 'create-atp') 
-        with:
-          url: jdbc:oracle:thin:@${{ steps.find-atp-url.outputs.ATP_URL }}
-          user: quizflyway
-          password: ${{ secrets.TF_VAR_ADMIN_PASSWORD }}  
 
       - name: Terraform Destroy
         #if: "contains(github.event.head_commit.message, 'destroy')"
