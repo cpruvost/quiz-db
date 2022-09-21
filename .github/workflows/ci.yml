@@ -99,7 +99,7 @@ jobs:
         if: contains(github.event.issue.title, 'create-atp') 
         uses: cpruvost/setup-sqlcl@v1.0.0   
         
-      - name: Create Oracle Schema
+      - name: Create Oracle User
         if: contains(github.event.issue.title, 'create-atp') 
         run: |
           ./sqlcl/bin/sql -V
@@ -107,6 +107,14 @@ jobs:
           cat ./src/main/resources/db/sql/create-schema.sql
           exit | ./sqlcl/bin/sql admin/${{ secrets.TF_VAR_ADMIN_PASSWORD }}@'${{ steps.find-atp-url.outputs.ATP_URL }}' @./src/main/resources/db/sql/create-schema.sql
         continue-on-error: true  
+        
+      - name: Create Oracle User Resources with Flyway
+        uses: joshuaavalon/flyway-action@v2
+        if: contains(github.event.issue.title, 'create-atp') 
+        with:
+          url: jdbc:oracle:thin:@${{ steps.find-atp-url.outputs.ATP_URL }}
+          user: quizflyway
+          password: ${{ secrets.TF_VAR_ADMIN_PASSWORD }}  
 
       - name: Terraform Destroy
         #if: "contains(github.event.head_commit.message, 'destroy')"
