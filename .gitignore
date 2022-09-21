@@ -5,3 +5,4 @@ dev_atp_config.properties
 
 #Local OCI Credentials for Terraform
 *.ps1
+*.tfvars
