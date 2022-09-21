@@ -61,6 +61,7 @@ jobs:
           DB_WORKLOAD: ${{ secrets.TF_VAR_DB_WORKLOAD }}
 
       - name: Terraform Plan
+        if: contains(github.event.issue.title, 'create-atp') 
         id: plan
         run: terraform plan -var-file=env.json -out myplan -no-color
         working-directory: "./src/main/resources/db/tf/modules/atp"
@@ -111,7 +112,7 @@ jobs:
         #if: "contains(github.event.head_commit.message, 'destroy')"
         if: contains(github.event.issue.title, 'destroy-atp') 
         id: destroy
-        run: terraform destroy -auto-approve  
+        run: terraform destroy -var-file=env.json -auto-approve  
         working-directory: "./src/main/resources/db/tf/modules/atp"
 
          

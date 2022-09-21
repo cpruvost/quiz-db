@@ -1,5 +1,4 @@
 COMPARTMENT_OCID = "ocid1.compartment.oc1..aaaaaaaaa532jpis6oqh4docc5dlqrwepknaeb5sss7altbpdtjcg2cb26ga"
-#db_name        = "CNAUTOATP"
 DB_NAME        = "CNAUTOATP"
 ADMIN_PASSWORD = "Alpha_2022__"
 DB_VERSION     = "19c"
