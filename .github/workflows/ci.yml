@@ -76,22 +76,9 @@ jobs:
         id: oci-cli
         with:
           command: 'iam region list'
-          #command: 'db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE'
-          #query: 'data[*].\"connection-string\s\".\"profiles\"[0].value'
-          #query: 'data[0].name'
-      
-      #- name: Install ##OCI CLI
-        #uses: cpruvost/o#ci-cli-action@v1.0.4
-        #wi#th:
-          ##user: "${{ secrets.TF_VAR_USER_OCID }}"
-          ##fingerprint: "${{ secrets.TF_VAR_FINGERPRINT }}"
-          ##tenancy: "${{ secrets.TF_VAR_TENANCY_OCID }}"
-          #re#gion: ${{ secrets.TF_VAR_REGION }}
-          ##api_key: |
-            #${{ secrets.TF_VAR_PRIVATE_KEY }}
-          #cli_version: master   
+          #query: 'data[0]'
           
-      - name: OCI commands
+      - name: Get ATP url with OCI CLI
         if: contains(github.event.issue.title, 'create-atp')
         id: find-atp-url 
         run: echo "::set-output name=ATP_URL::$(oci db autonomous-database list --compartment-id=${{ secrets.TF_VAR_COMPARTMENT_OCID }} --display-name=${{ secrets.TF_VAR_DB_NAME }} --lifecycle-state=AVAILABLE | jq -r .data[0].\"connection-strings\".\"profiles\"[0].value)"
@@ -99,7 +86,25 @@ jobs:
       - name: show ATP url
         if: contains(github.event.issue.title, 'create-atp') 
         run: |
-         echo "${{ steps.find-atp-url.outputs.ATP_URL }}"   
+         echo "${{ steps.find-atp-url.outputs.ATP_URL }}"  
+         
+      - name: 'Set up latest Oracle JDK 17'
+        if: contains(github.event.issue.title, 'create-atp') 
+        uses: oracle-actions/setup-java@v1
+        with:
+         website: oracle.com
+         release: 17    
+         
+      - name: Install Oracle Sqlcl
+        if: contains(github.event.issue.title, 'create-atp') 
+        uses: cpruvost/setup-sqlcl@v1.0.0   
+        
+      - name: Create Oracle Schema
+        if: contains(github.event.issue.title, 'create-atp') 
+        run: |
+          /sqlcl/bin/sql -V
+          sed 's/mypassword/${{ secrets.TF_VAR_ADMIN_PASSWORD }}/g' ./src/main/resources/db/sql/create-schema.sql
+          cat ./src/main/resources/db/sql/create-schema.sql
 
       - name: Terraform Destroy
         #if: "contains(github.event.head_commit.message, 'destroy')"
