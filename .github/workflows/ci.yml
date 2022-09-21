@@ -102,7 +102,7 @@ jobs:
       - name: Create Oracle Schema
         if: contains(github.event.issue.title, 'create-atp') 
         run: |
-          /sqlcl/bin/sql -V
+          ./sqlcl/bin/sql -V
           sed 's/mypassword/${{ secrets.TF_VAR_ADMIN_PASSWORD }}/g' ./src/main/resources/db/sql/create-schema.sql
           cat ./src/main/resources/db/sql/create-schema.sql
 
