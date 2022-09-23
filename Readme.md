@@ -1,4 +1,4 @@
-# Create an Oracle Autonomous Db with github (and version control your shema with Flyway) 
+# Create an Oracle Autonomous Db with github (and version control your schema with Flyway) 
 
 This workshop guides you through the setup, and the configuration of a Github Workflow in order to create/destroy an Autonomous Database and to version control your database schema with Flyway in a Microservices Architecture.
 
