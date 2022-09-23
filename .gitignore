@@ -6,3 +6,11 @@ dev_atp_config.properties
 #Local OCI Credentials for Terraform
 *.ps1
 *.tfvars
+
+#  Local .terraform directories
+**/.terraform/*
+.terraform.lock.hcl
+
+# .tfstate files
+*.tfstate
+*.tfstate.*

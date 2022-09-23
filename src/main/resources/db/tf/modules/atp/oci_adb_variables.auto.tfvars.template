@@ -1,0 +1,12 @@
+#Terraform variables
+COMPARTMENT_OCID = "ocid1.compartment.oc1..aaa..................xxxxx"
+DB_NAME        = "XXXX"
+ADMIN_PASSWORD = "XXXX"
+DB_VERSION     = "19c"
+# OLTP, DW, AJD, APEX
+DB_WORKLOAD    = "OLTP"
+# Must be false for AJD and APEX
+IS_FREE_TIER   = "false"
+LICENCE_MODEL  = "BRING_YOUR_OWN_LICENSE"
+IS_MTLS  = "false"
+WHITELISTED_IPS = ["0.0.0.0/0"]

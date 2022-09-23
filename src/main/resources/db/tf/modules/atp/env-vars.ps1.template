@@ -1,0 +1,15 @@
+### Authentication details
+$env:TF_VAR_TENANCY_OCID ="ocid1.tenancy.oc1..aaaaaaaahrs4ava......xxxxxxxxxxxxxxxxxxxxx"
+$env:TF_VAR_USER_OCID ="ocid1.user.oc1..aaaaaaaae4.....xxxxxxxxxxxxxxxxxx"
+$env:TF_VAR_FINGERPRINT ="4f:90:09:d7:2a:ea:81.....xxxxxxxxxxxxxxxxxx"
+$env:TF_VAR_PRIVATE_KEY = "-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAyCt82bSAeSWBtwK1razNApgDVvpVD1IfHUti+0n9X2ZTYb9k
+Nm41XYjnBSi9MHh3hG7AHXf8NyF3ghlDJmo/Ai+vtr6wZoG6AWVUSgSDN3NYKizB
++qaWLf9Xnt282GLXmW4yKh4P.......xxxxxxxxxxxxxx
+-----END RSA PRIVATE KEY-----"
+$env:TF_VAR_REGION="eu-paris-1"
+
+### Terraform Init
+#terraform init -reconfigure -backend-config="address=https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/cnNvV.....xxxxxxxxx/n/oraseemeafrtech1/b/Minecraft/o/terraform.tfstate"
+
+
