@@ -37,17 +37,19 @@ First if you want to test the terraform files locally. You have to rename oci_ad
 
 Secondly you need to create a Bucket (Object Storage) on OCI, store in it a terraform.state empty file, and create a pre-authenticated request. After that you can do a terraform init -reconfigure -backend-config="address=https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/cnNvV.....xxxxxxxxx/n/oraseemeafrtech1/b/Minecraft/o/terraform.tfstate". Then do a terraform plan to check that all is ok.
 
-At the end go to your github project and create all the needed secrets with the good values
+## Part Four : the github workflows
+
+Look at the file .github\workflows\ci.yml in order to understand all the steps of the workflow that will create/destroy the Autonomous Db. 
+
+Then go to your github project and create all the needed secrets with the good values
 
 ![Use EBR](docs/images/secrets.png)
 
 Now on github You can create an issue "create-atp" that will trigger an ATP creation or create an issue "destroy-atp" that will trigger the ATP termination.
 
-
-
 Note : There we do not use Mutual TLS connection with the ATP wallet.zip file. We use the TLS connection so no need to manage this boring wallet :o). We allowed a connection from everywhere with the CIDR ["0.0.0.0/0"] but it is just for the demo. Do not do that in production :o)
 
-## Part Four : Run the Flyway migration.
+## Part Five : Run the Flyway migration.
 
 Copy the prod_atp_config.properties to dev_atp_config.properties. Update the variables of the file with the good values.
 The user is quizflyway
